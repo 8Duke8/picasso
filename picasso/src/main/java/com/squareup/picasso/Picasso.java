@@ -233,7 +233,9 @@ public class Picasso {
   Bitmap quickMemoryCacheCheck(String key) {
     Bitmap cached = cache.get(key);
     if (cached != null) {
-      stats.cacheHit();
+      stats.dispatchCacheHit();
+    } else {
+      stats.dispatchCacheMiss();
     }
     return cached;
   }
@@ -424,7 +426,7 @@ public class Picasso {
 
       Stats stats = new Stats(cache);
 
-      Dispatcher dispatcher = new Dispatcher(context, service, HANDLER, downloader, cache);
+      Dispatcher dispatcher = new Dispatcher(context, service, HANDLER, downloader, cache, stats);
 
       return new Picasso(context, dispatcher, cache, listener, stats, debugging);
     }
